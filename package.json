@@ -1,5 +1,5 @@
 {
-  "name": "consultation-forum",
+  "name": "consultation-forum-3layers",
   "version": "1.0.0",
   "description": "This project will be used for ficct students",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jroge-uagrm/ConsultationForum.git"
+    "url": "git+https://github.com/jroge-uagrm/consultation-forum-3layers.git"
   },
   "author": "JrogeT",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jroge-uagrm/ConsultationForum/issues"
+    "url": "https://github.com/jroge-uagrm/consultation-forum-3layers/issues"
   },
-  "homepage": "https://github.com/jroge-uagrm/ConsultationForum#readme",
+  "homepage": "https://github.com/jroge-uagrm/consultation-forum-3layers#readme",
   "dependencies": {
     "Validator": "^1.1.2",
     "bcrypt": "^5.0.0",
