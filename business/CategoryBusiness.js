@@ -1,14 +1,14 @@
 'use strict'
 
 var Validator = require('Validator');
-var CategoryModel = require('../models/category-model');
-var UserModel = require('../models/user-model');
+var CategoryData = require('../data/CategoryData');
+var UserData = require('../data/UserData');
 let pejs = require('pejs');
-var views = pejs();
-var user = new UserModel();
-var category = new CategoryModel();
+var presentations = pejs();
+var user = new UserData();
+var category = new CategoryData();
 
-class CategoryController {
+class CategoryBusiness {
 
     search = async (res, word) => {
         var categories = await category.search(word);
@@ -26,9 +26,9 @@ class CategoryController {
         res.end(response);
     }
 
-    sendView = (res, file, data = {}) => {
-        console.log("Sendingd view:" + file);
-        views.render(`./views/publication/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
+    sendPresentation = (res, file, data = {}) => {
+        console.log("Sendingd presentation:" + file);
+        presentations.render(`./presentations/publication/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
@@ -53,4 +53,4 @@ class CategoryController {
     }
 }
 
-module.exports = CategoryController;
+module.exports = CategoryBusiness;

@@ -9,18 +9,18 @@ const http = require('http');
 var nodeStatic = require('node-static');
 var authMid = require('./auth/middleware');
 var fileServer = new nodeStatic.Server('./public');
-const Controller = require('./controllers/controller');
-const UserController = require('./controllers/user-controller');
-const PublicationController = require('./controllers/publication-controller');
-const CommentController = require('./controllers/comment-controller');
-const CategoryController = require('./controllers/category-controller');
-const GroupController = require('./controllers/group-controller');
-const userController = new UserController();
-const controller = new Controller();
-const publicationController = new PublicationController();
-const commentController = new CommentController();
-const categoryController = new CategoryController();
-const groupController = new GroupController();
+const Business = require('./business/Business');
+const UserBusiness = require('./business/UserBusiness');
+const PublicationBusiness = require('./business/PublicationBusiness');
+const CommentBusiness = require('./business/CommentBusiness');
+const CategoryBusiness = require('./business/CategoryBusiness');
+const GroupBusiness = require('./business/GroupBusiness');
+const userBusiness = new UserBusiness();
+const business = new Business();
+const publicationBusiness = new PublicationBusiness();
+const commentBusiness = new CommentBusiness();
+const categoryBusiness = new CategoryBusiness();
+const groupBusiness = new GroupBusiness();
 
 const host = process.env.APP_HOST || 'http://localhost';
 const port = process.env.PORT || 3000;
@@ -49,26 +49,26 @@ async function handleRequest(req, res) {
 
 async function handleGet(req, res) {
     switch (req.url) {
-        case '/': controller.redirectTo(res, '/login'); break;
-        case '/echo': controller.sendEcho(res); break;
+        case '/': business.redirectTo(res, '/login'); break;
+        case '/echo': business.sendEcho(res); break;
         case '/me': authMid.authenticate(req, res); break;
-        case '/register': userController.registerView(res); break;
-        case '/login': userController.loginView(res); break;
-        case '/home': publicationController.publicationsView(res); break;
-        case '/publication': publicationController.registerView(res); break;
-        case '/categories': categoryController.getAll(res); break;
-        case '/group': groupController.registerView(res); break;
+        case '/register': userBusiness.registerPresentation(res); break;
+        case '/login': userBusiness.loginPresentation(res); break;
+        case '/home': publicationBusiness.publicationsPresentation(res); break;
+        case '/publication': publicationBusiness.registerPresentation(res); break;
+        case '/categories': categoryBusiness.getAll(res); break;
+        case '/group': groupBusiness.registerPresentation(res); break;
         default: handleRouteWithParams(req, res); break;
     }
 }
 
 async function handlePost(req, res) {
     switch (req.url) {
-        case '/register': userController.register(req, res); break;
-        case '/login': userController.login(req, res); break;
-        case '/comment': commentController.register(req, res); break;
-        case '/publication': publicationController.register(req, res); break;
-        case '/group': groupController.register(req, res); break;
+        case '/register': userBusiness.register(req, res); break;
+        case '/login': userBusiness.login(req, res); break;
+        case '/comment': commentBusiness.register(req, res); break;
+        case '/publication': publicationBusiness.register(req, res); break;
+        case '/group': groupBusiness.register(req, res); break;
         default: routeNotFound(req, res); break;
     }
 }
@@ -76,36 +76,36 @@ async function handlePost(req, res) {
 async function handleRouteWithParams(req, res) {
     if (req.url.match(/\/publications\/([0-9]+)+/)) {
         const id = req.url.split('/')[2];
-        return publicationController.getPublicationsFromUserId(res, id);
+        return publicationBusiness.getPublicationsFromUserId(res, id);
     } else if (req.url.match(/\/publication\/([0-9]+)+/)) {
         const id = req.url.split('/')[2];
-        return publicationController.getPublication(res, id);
+        return publicationBusiness.getPublication(res, id);
     } else if (req.url.match(/\/group\/([0-9]+)+/)) {
         const id = req.url.split('/')[2];
-        return groupController.getGroup(res, id);
+        return groupBusiness.getGroup(res, id);
     } else if (req.url.match(/\/search\/\w+\/\w+/)) {
         const tableName = req.url.split('/')[2];
         const word = req.url.split('/')[3];
         switch (tableName) {
-            case 'categories': return categoryController.search(res, word);
-            case 'groups': return groupController.search(res, word);
-            case 'users': return userController.search(res, word);
-            default: controller.sendView(res, 'not-found'); break;
+            case 'categories': return categoryBusiness.search(res, word);
+            case 'groups': return groupBusiness.search(res, word);
+            case 'users': return userBusiness.search(res, word);
+            default: business.sendPresentation(res, 'not-found'); break;
         }
     } else if (req.url.match(/\/search\/\w+\/\w+/)) {
         const tableName = req.url.split('/')[2];
         const word = req.url.split('/')[3];
         switch (tableName) {
             case 'categories':
-                return categoryController.search(res, word);
+                return categoryBusiness.search(res, word);
             default:
-                controller.sendView(res, 'not-found');
+                business.sendPresentation(res, 'not-found');
                 break;
         }
     } else {
         fileServer.serve(req, res, (error, response) => {
             if (error && (error.status === 404)) {
-                controller.sendView(res, 'not-found');
+                business.sendPresentation(res, 'not-found');
             }
         });
     }

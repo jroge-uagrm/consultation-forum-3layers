@@ -1,9 +1,9 @@
 'use strict'
 
 let pejs = require('pejs');
-var views = pejs();
+var presentations = pejs();
 
-class Controller {
+class Business {
 
     sendEcho = (res) => {
         this.sendResponse(res, 200, 'All ok.');
@@ -15,7 +15,7 @@ class Controller {
     }
 
     routeNotFound = (res) => {
-        this.sendView(res, 'not-found');
+        this.sendPresentation(res, 'not-found');
     }
 
     sendResponse = (res, code, message, body = {}) => {
@@ -30,9 +30,9 @@ class Controller {
         res.end(response);
     }
 
-    sendView = (res, file, data = {}) => {
-        console.log("Sending view:" + file);
-        views.render(`./views/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
+    sendPresentation = (res, file, data = {}) => {
+        console.log("Sending presentation:" + file);
+        presentations.render(`./presentations/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
@@ -57,4 +57,4 @@ class Controller {
     }
 }
 
-module.exports = Controller;
+module.exports = Business;

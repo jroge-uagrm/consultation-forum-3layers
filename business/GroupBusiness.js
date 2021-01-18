@@ -1,23 +1,23 @@
 'use strict'
 
 var Validator = require('Validator');
-var GroupModel = require('../models/group-model');
-var GroupCategoryModel = require('../models/group-category-model');
-var UserModel = require('../models/user-model');
-var CategoryModel = require('../models/category-model');
-var PublicationModel = require('../models/publication-model');
+var GroupData = require('../data/group-data');
+var GroupCategoryData = require('../data/GroupCategory-data');
+var UserData = require('../data/UserData');
+var CategoryData = require('../data/CategoryData');
+var PublicationData = require('../data/PublicationData');
 let pejs = require('pejs');
-var views = pejs();
-var group = new GroupModel();
-var user = new UserModel();
-var category = new CategoryModel();
-var groupCategory = new GroupCategoryModel();
-var publication = new PublicationModel();
+var presentations = pejs();
+var group = new GroupData();
+var user = new UserData();
+var category = new CategoryData();
+var groupCategory = new GroupCategoryData();
+var publication = new PublicationData();
 
-class GroupController {
+class GroupBusiness {
 
-    registerView = (res) => {
-        this.sendView(res, 'register');
+    registerPresentation = (res) => {
+        this.sendPresentation(res, 'register');
     }
 
     register = async (req, res) => {
@@ -58,12 +58,12 @@ class GroupController {
     getGroup = async (res, id) => {
         let groupFound = await group.getFromId(id);
         if (!groupFound)
-            return this.sendView(res, 'not-found');
+            return this.sendPresentation(res, 'not-found');
         let userOwner = await user.getUserById(groupFound.user_id);
         let groupCategories = await category.getFromGroupId(groupFound.id);
         let publications = await publication.getFromGroupId(groupFound.id);
         //TODO get all the user request
-        this.sendView(res, 'group', {
+        this.sendPresentation(res, 'group', {
             group: groupFound,
             user: userOwner,
             categories: groupCategories,
@@ -84,9 +84,9 @@ class GroupController {
         res.end(response);
     }
 
-    sendView = (res, file, data) => {
-        console.log("Sending view:" + file);
-        views.render(`./views/group/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
+    sendPresentation = (res, file, data) => {
+        console.log("Sending presentation:" + file);
+        presentations.render(`./presentations/group/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
@@ -111,4 +111,4 @@ class GroupController {
     }
 }
 
-module.exports = GroupController;
+module.exports = GroupBusiness;

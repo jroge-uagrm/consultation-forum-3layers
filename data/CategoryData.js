@@ -3,7 +3,7 @@
 var moment = require('moment');
 var connection = require('../db/connection').Connection;
 
-class CategoryModel {
+class CategoryData {
 
     search = async (word) => {
         return new Promise(async (resolve, reject) => {
@@ -63,4 +63,4 @@ class CategoryModel {
 
 }
 
-module.exports = CategoryModel;
+module.exports = CategoryData;

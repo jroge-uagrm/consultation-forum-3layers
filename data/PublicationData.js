@@ -3,7 +3,7 @@
 var moment = require('moment');
 var connection = require('../db/connection').Connection;
 
-class PublicationModel {
+class PublicationData {
 
     create = async (data) => {
         return new Promise(async (resolve, reject) => {
@@ -93,4 +93,4 @@ class PublicationModel {
 
 }
 
-module.exports = PublicationModel;
+module.exports = PublicationData;

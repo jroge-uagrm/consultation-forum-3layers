@@ -3,7 +3,7 @@
 var moment = require('moment');
 var connection = require('../db/connection').Connection;
 
-class GroupCategoryModel {
+class GroupCategoryData {
 
     createFromAPublication = async (publication_id, category) => {
         return new Promise(async (resolve, reject) => {
@@ -43,4 +43,4 @@ class GroupCategoryModel {
 
 }
 
-module.exports = GroupCategoryModel;
+module.exports = GroupCategoryData;

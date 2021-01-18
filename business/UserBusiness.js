@@ -1,16 +1,16 @@
 'use strict'
 
 var Validator = require('Validator');
-var UserModel = require('../models/user-model');
+var UserData = require('../data/UserData');
 var jwt = require('../auth/jwt');
 let pejs = require('pejs');
-var views = pejs();
-var user = new UserModel();
+var presentations = pejs();
+var user = new UserData();
 
-class UserController {
+class UserBusiness {
 
-    registerView = (res) => {
-        this.sendView(res, 'register');
+    registerPresentation = (res) => {
+        this.sendPresentation(res, 'register');
     }
 
     register = async (req, res) => {
@@ -46,8 +46,8 @@ class UserController {
         }
     }
 
-    loginView = (res) => {
-        this.sendView(res, 'login');
+    loginPresentation = (res) => {
+        this.sendPresentation(res, 'login');
     }
 
     login = async (req, res) => {
@@ -93,11 +93,11 @@ class UserController {
         res.end(response);
     }
 
-    sendView = (res, file, data = {}) => {
-        console.log("Sending view: " + file);
+    sendPresentation = (res, file, data = {}) => {
+        console.log("Sending presentation: " + file);
         var myData = { data, host: process.env.APP_HOST };
         //console.log(myData);
-        views.render(`./views/user/${file}`, myData, (error, str) => {
+        presentations.render(`./presentations/user/${file}`, myData, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
@@ -122,4 +122,4 @@ class UserController {
     }
 }
 
-module.exports = UserController;
+module.exports = UserBusiness;

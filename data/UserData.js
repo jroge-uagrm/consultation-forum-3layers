@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 var moment = require('moment');
 var connection = require('../db/connection').Connection;
 
-class UserModel {
+class UserData {
 
     create = async (data) => {
         return new Promise(async (resolve, reject) => {
@@ -154,4 +154,4 @@ class UserModel {
     }
 }
 
-module.exports = UserModel;
+module.exports = UserData;

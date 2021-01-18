@@ -1,21 +1,21 @@
 'use strict'
 
 var Validator = require('Validator');
-var PublicationModel = require('../models/publication-model');
-var UserModel = require('../models/user-model');
-var CommentModel = require('../models/comment-model');
-var PublicationCategoryModel = require('../models/group-category-model');
+var PublicationData = require('../data/PublicationData');
+var UserData = require('../data/UserData');
+var CommentData = require('../data/CommentData');
+var PublicationCategoryData = require('../data/GroupCategory-data');
 let pejs = require('pejs');
-var views = pejs();
-var user = new UserModel();
-var publication = new PublicationModel();
-var comment = new CommentModel();
-var publicationCategory = new PublicationCategoryModel();
+var presentations = pejs();
+var user = new UserData();
+var publication = new PublicationData();
+var comment = new CommentData();
+var publicationCategory = new PublicationCategoryData();
 
-class PublicationController {
+class PublicationBusiness {
 
-    registerView = (res) => {
-        this.sendView(res, 'register');
+    registerPresentation = (res) => {
+        this.sendPresentation(res, 'register');
     }
 
     register = async (req, res) => {
@@ -38,17 +38,17 @@ class PublicationController {
         }
     }
 
-    publicationsView = (res) => {
-        this.sendView(res, 'mine');
+    publicationsPresentation = (res) => {
+        this.sendPresentation(res, 'mine');
     }
 
     getPublicationsFromUserId = async (res, userId) => {
         let userOwner = await user.getUserById(userId);
         if (!userOwner)
-            return this.sendView(res, 'not-found');
+            return this.sendPresentation(res, 'not-found');
         try {
             let publications = await publication.getFromUserId(userId);
-            this.sendView(res, 'publications', {
+            this.sendPresentation(res, 'publications', {
                 publications: publications,
                 user: userOwner
             });
@@ -60,10 +60,10 @@ class PublicationController {
     getPublication = async (res, id) => {
         let publicationFound = await publication.getFromId(id);
         if (!publicationFound)
-            return this.sendView(res, 'not-found');
+            return this.sendPresentation(res, 'not-found');
         let userOwner = await user.getUserById(publicationFound.user_id);
         let publicationComments = await comment.getFromPublicationId(id);
-        this.sendView(res, 'publication', {
+        this.sendPresentation(res, 'publication', {
             publication: publicationFound,
             user: userOwner,
             comments: publicationComments
@@ -83,18 +83,18 @@ class PublicationController {
         res.end(response);
     }
 
-    sendView = (res, file, data) => {
-        console.log("Sending view:" + file);
+    sendPresentation = (res, file, data) => {
+        console.log("Sending presentation:" + file);
         var myData = { data, host: process.env.APP_HOST };
         //console.log(myData);
         if (file != 'not-found')
-            views.render(`./views/publication/${file}`, myData, (error, str) => {
+            presentations.render(`./presentations/publication/${file}`, myData, (error, str) => {
                 res.statusCode = 200;
                 res.setHeader('Content-type', 'text/html');
                 res.end(str);
             });
         else
-            views.render(`./views/${file}`, myData, (error, str) => {
+            presentations.render(`./presentations/${file}`, myData, (error, str) => {
                 res.statusCode = 200;
                 res.setHeader('Content-type', 'text/html');
                 res.end(str);
@@ -119,4 +119,4 @@ class PublicationController {
     }
 }
 
-module.exports = PublicationController;
+module.exports = PublicationBusiness;

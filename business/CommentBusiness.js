@@ -1,14 +1,14 @@
 'use strict'
 
 var Validator = require('Validator');
-var CommentModel = require('../models/comment-model');
-var UserModel = require('../models/user-model');
+var CommentData = require('../data/CommentData');
+var UserData = require('../data/UserData');
 let pejs = require('pejs');
-var views = pejs();
-var user = new UserModel();
-var comment = new CommentModel();
+var presentations = pejs();
+var user = new UserData();
+var comment = new CommentData();
 
-class CommentController {
+class CommentBusiness {
 
     register = async (req, res) => {
         let request = (await this.getRequest(req)).data;
@@ -42,9 +42,9 @@ class CommentController {
         res.end(response);
     }
 
-    sendView = (res, file, data) => {
-        console.log("Sending view:" + file);
-        views.render(`./views/publication/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
+    sendPresentation = (res, file, data) => {
+        console.log("Sending presentation:" + file);
+        presentations.render(`./presentations/publication/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
@@ -69,4 +69,4 @@ class CommentController {
     }
 }
 
-module.exports = CommentController;
+module.exports = CommentBusiness;
