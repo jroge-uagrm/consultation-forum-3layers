@@ -3,7 +3,7 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var UserData = require('../data/UserData');
-var Business = require('../business/business');
+var Business = require('../business/Business');
 var business = new Business();
 var user = new UserData();
 var key = process.env.APP_SECRET_JWT_KEY;
