@@ -97,7 +97,7 @@ class UserBusiness {
         console.log("Sending presentation: " + file);
         var myData = { data, host: process.env.APP_HOST };
         //console.log(myData);
-        presentations.render(`./presentations/user/${file}`, myData, (error, str) => {
+        presentations.render(`./presentation/user/${file}`, myData, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);

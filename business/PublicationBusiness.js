@@ -88,13 +88,13 @@ class PublicationBusiness {
         var myData = { data, host: process.env.APP_HOST };
         //console.log(myData);
         if (file != 'not-found')
-            presentations.render(`./presentations/publication/${file}`, myData, (error, str) => {
+            presentations.render(`./presentation/publication/${file}`, myData, (error, str) => {
                 res.statusCode = 200;
                 res.setHeader('Content-type', 'text/html');
                 res.end(str);
             });
         else
-            presentations.render(`./presentations/${file}`, myData, (error, str) => {
+            presentations.render(`./presentation/${file}`, myData, (error, str) => {
                 res.statusCode = 200;
                 res.setHeader('Content-type', 'text/html');
                 res.end(str);

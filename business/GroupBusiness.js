@@ -86,7 +86,7 @@ class GroupBusiness {
 
     sendPresentation = (res, file, data) => {
         console.log("Sending presentation:" + file);
-        presentations.render(`./presentations/group/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
+        presentations.render(`./presentation/group/${file}`, { data, host: process.env.APP_HOST }, (error, str) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/html');
             res.end(str);
